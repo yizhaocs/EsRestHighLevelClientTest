@@ -1,55 +1,20 @@
-import org.apache.http.HttpHost;
 import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.client.RequestOptions;
-import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.xcontent.XContentType;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class JavaMain {
-    public static void main(String[] args) {
-        JavaMain mJavaMain = new JavaMain();
-        mJavaMain.test1();
-    }
-
-    public void test1() {
-        RestHighLevelClient client = null;
-
-        try {
-            client = new RestHighLevelClient(
-                    RestClient.builder(
-                            new HttpHost("localhost", 9200, "http")));
-
-            indexRequest1(client);
-            getRequest1(client);
-
-
-
-
-        }catch (Exception e){
-            System.out.println("unknow exception");
-        }finally {
-            try {
-                if(client != null) {
-                    client.close();
-                }
-            }catch (IOException ioe){
-                System.out.println("IOException");
-            }
-        }
-    }
-
+public class DocumentAPI {
     /*
         providing the json string
      */
-    private void indexRequest1(RestHighLevelClient client) throws Exception{
+    void indexRequest1(RestHighLevelClient client) throws Exception{
         IndexRequest indexRequest = new IndexRequest("posts");
         indexRequest.id("1");
         String jsonString = "{" +
@@ -65,7 +30,7 @@ public class JavaMain {
     /*
      providing the document source, Document source provided as a Map which gets automatically converted to JSON format
   */
-    private void indexRequest2(RestHighLevelClient client) throws Exception{
+     void indexRequest2(RestHighLevelClient client) throws Exception{
         Map<String, Object> jsonMap = new HashMap();
         jsonMap.put("user", "kimchy");
         jsonMap.put("postDate", new Date());
@@ -89,15 +54,15 @@ public class JavaMain {
     }
 
 
-    private void getRequest1(RestHighLevelClient client ) throws Exception{
+     void getRequest1(RestHighLevelClient client ) throws Exception{
         GetRequest getRequest = new GetRequest(
                 "posts",
                 "1");
         GetResponse getResponse = client.get(getRequest, RequestOptions.DEFAULT);
-        retrieveTheRequestedDocumentInGetResponse(getResponse);
+         readGetResponse(getResponse);
     }
 
-    private void retrieveTheRequestedDocumentInGetResponse(GetResponse getResponse){
+     void readGetResponse(GetResponse getResponse){
         String index = getResponse.getIndex();
         String id = getResponse.getId();
         System.out.printf(" index: %s%n id: %s%n", index, id);
