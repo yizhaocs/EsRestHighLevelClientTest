@@ -14,10 +14,11 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        //documentApitest1();
+        //documentApiTest1();
         //searchAPITest1();
         //searchAPITest2();
-        searchAPITest3();
+        //searchAPITest3();
+        searchAPITest4();
 
         try {
             if(client != null) {
@@ -35,7 +36,7 @@ public class Main {
          sourceAsString: {"user":"kimchy","postDate":"2013-01-30","message":"trying out Elasticsearch"}
          sourceAsMap: {postDate=2013-01-30, message=trying out Elasticsearch, user=kimchy}
      */
-    private static void documentApitest1() throws Exception{
+    private static void documentApiTest1() throws Exception{
         DocumentAPI mDcoumentAPI = new DocumentAPI();
         mDcoumentAPI.indexRequest1(client);
         mDcoumentAPI.getRequest1(client);
@@ -55,9 +56,13 @@ public class Main {
         mSearchAPI.countApi(client);
     }
 
+    /**
+     * search in specific index
+     * @throws Exception
+     */
     /*
         "searchResponse":{
-           "took":1,
+           "took":0,
            "timed_out":false,
            "_shards":{
               "total":1,
@@ -67,25 +72,56 @@ public class Main {
            },
            "hits":{
               "total":{
-                 "value":0,
+                 "value":1,
                  "relation":"eq"
               },
-              "max_score":null,
+              "max_score":1.0,
               "hits":[
-
+                 {
+                    "_index":"posts",
+                    "_type":"_doc",
+                    "_id":"1",
+                    "_score":1.0,
+                    "_source":{
+                       "postDate":"2013-01-30",
+                       "message":"trying out Elasticsearch",
+                       "user":"kimchy"
+                    }
+                 }
               ]
            }
         }
      */
     private static void searchAPITest2() throws Exception{
         SearchAPI mSearchAPI = new SearchAPI();
-        String script = "{" +
-                "  \"query\": { \"match\" : { \"{{field}}\" : \"{{value}}\" } }," +
-                "  \"size\" : \"{{size}}\"" +
+        String script = "{\n" +
+                "  \"query\": {\n" +
+                "    \"match_all\": {}\n" +
+                "  }\n" +
                 "}";
         mSearchAPI.searchTemplateRequest(client, "posts", script);
     }
 
+
+    /**
+     * search in all indices
+     * @throws Exception
+     */
+    private static void searchAPITest3() throws Exception{
+        SearchAPI mSearchAPI = new SearchAPI();
+        String script = "{\n" +
+                "  \"query\": {\n" +
+                "    \"match_all\": {}\n" +
+                "  }\n" +
+                "}";
+        mSearchAPI.searchTemplateRequest(client, "*", script);
+    }
+
+
+    /**
+     * fetch all fields from all indices
+     * @throws Exception
+     */
     /*
         "searchResponse":{
            "took":75,
@@ -117,7 +153,7 @@ public class Main {
            }
         }
      */
-    private static void searchAPITest3() throws Exception{
+    private static void searchAPITest4() throws Exception{
         SearchAPI mSearchAPI = new SearchAPI();
         String script = "{\n" +
                 "  \"size\": 0,\n" +
@@ -125,7 +161,7 @@ public class Main {
                 "    \"range\": {\n" +
                 "      \"phRecvTime\": {\n" +
                 "        \"from\": 1616115600000,\n" +
-                "        \"to\": 1616119200000,\n" +
+                "        \"to\": 1622051666674,\n" +
                 "        \"include_lower\": true,\n" +
                 "        \"include_upper\": true,\n" +
                 "        \"boost\": 1\n" +
@@ -143,6 +179,6 @@ public class Main {
                 "    }\n" +
                 "  }\n" +
                 "}";
-        mSearchAPI.searchTemplateRequest(client, "kibana_sample_data_flights",script);
+        mSearchAPI.searchTemplateRequest(client, "*",script);
     }
 }
