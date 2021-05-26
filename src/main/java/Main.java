@@ -83,7 +83,7 @@ public class Main {
                 "  \"query\": { \"match\" : { \"{{field}}\" : \"{{value}}\" } }," +
                 "  \"size\" : \"{{size}}\"" +
                 "}";
-        mSearchAPI.searchTemplateRequest(client, script);
+        mSearchAPI.searchTemplateRequest(client, "posts", script);
     }
 
     /*
@@ -143,6 +143,6 @@ public class Main {
                 "    }\n" +
                 "  }\n" +
                 "}";
-        mSearchAPI.searchTemplateRequest(client, script);
+        mSearchAPI.searchTemplateRequest(client, "kibana_sample_data_flights",script);
     }
 }

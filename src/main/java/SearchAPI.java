@@ -39,9 +39,9 @@ public class SearchAPI {
 
     }
 
-    void searchTemplateRequest(RestHighLevelClient client, String script) throws Exception{
+    void searchTemplateRequest(RestHighLevelClient client, String indices, String script) throws Exception{
         SearchTemplateRequest request = new SearchTemplateRequest();
-        request.setRequest(new SearchRequest("posts"));
+        request.setRequest(new SearchRequest(indices));
 
         request.setScriptType(ScriptType.INLINE);
         request.setScript(script);
