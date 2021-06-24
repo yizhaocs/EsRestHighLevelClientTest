@@ -9,12 +9,12 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         RestHighLevelClient client = RestHighLevelClientInstance.getInstance();
-        //documentApiTest1();
-        //searchAPITest1();
-        //searchAPITest2();
-        //searchAPITest3();
-        searchAPITest4();
-        searchAPITest5();
+        //documentApiTest1client();
+        //searchAPITest1(client);
+        //searchAPITest2(client);
+        //searchAPITest3(client);
+        searchAPITest4(client);
+        searchAPITest5(client);
 
         try {
             if(client != null) {
@@ -528,7 +528,7 @@ public class Main {
        }
     }
      */
-    private static void searchAPITest4() throws Exception{
+    private static void searchAPITest4(RestHighLevelClient client) throws Exception{
         SearchAPI mSearchAPI = new SearchAPI();
         String script = "{\n" +
                 "  \"size\": 0,\n" +
@@ -584,7 +584,7 @@ public class Main {
            }
         }
      */
-    private static void searchAPITest5() throws Exception{
+    private static void searchAPITest5(RestHighLevelClient client) throws Exception{
         SearchAPI mSearchAPI = new SearchAPI();
         String script = "{\n" +
                 "  \"size\": 0,\n" +
